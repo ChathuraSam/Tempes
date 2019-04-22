@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Always Read this instructions bofore write code.(Author: C.M.A Samarajeewa)
 -------------------------------------------------------------------------------
-1.
+1.DB
+
+create database tempes-db;
+use tempes-db;
+
