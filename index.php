@@ -1,53 +1,84 @@
+<?php
+require_once "get-data.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	<!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> -->
 	<link rel="icon" href="assets/weather-icon.png" type="image/png" sizes="16x16">
 	<title>Tempes-Weather Search</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
+
 	<div class="cont">
 		<div class="main">
 			<img src="assets/fogg-coffee-break.png" width="30%">
-			<h1>Weather Forecast</h1>
+			<h1>Weather Forecast..</h1>
 			<form action="index.php" method="GET">
 				<input type="text" name="city" class="form-input" placeholder="City">
 				<input type="submit" class="btn" value="Find">
 			</form>
+			<?php
+			if (isset($data)) {
+				// print_r($data);
+
+				echo "
+				
+				<div class='card'>
+				<span class='city'>$data->name</span>
+				<ul class='menu'>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+				<br>
+				<div class='sun'>
+				<img src='http://openweathermap.org/img/w/".$data->weather[0]->icon.".png' class='weather-icon'>
+				</div>
+				<span class='temp'>".floor($data->main->temp_max)."°C</span>
+				<span>
+					<ul class='variations'>
+						<li>".ucwords($data->weather[0]->description)."</li>
+						<li><span class='speed'>".$data->wind->speed."km/h</span></span></li>
+					</ul>
+				</span>
+				<div class='forecast clear'>
+					<div class='day tue'>TUE
+						<br> <span class='cloudy'></span> <br> <span class='highTemp'>79&#176;</span> <br> <span class='lowTemp'>57&#176;</span>
+					</div>
+					<div class='day wed'>WED
+						<br> <span class='sunny'></span> <br> <span class='highTemp'>79&#176;</span> <br> <span class='lowTemp'>57&#176;</span>
+					</div>
+				</div>
+			</div>
+				";
+			}
+			?>
 		</div>
 	</div>
-	<div>Humidity: <?php echo $data->main->humidity; ?> %</div>
-	<div>Wind: <?php echo $data->wind->speed; ?> km/h</div>
-	<?php
-	if (isset($_GET['city'])) {
-		$city = $_GET['city'];
-		echo "***********";
 
-		$apiKey = "ff1ab9a051b88deba1cc6fa45581d638";
-		$googleApiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" . $city . "&lang=en&units=metric&APPID=" . $apiKey;
+	<div class="back">
+		<div class="div-center">
 
-		$ch = curl_init();
+			<div class="weather-forecast">
+				 <?php echo $data->main->temp_max; ?>°C<span class="min-temperature"><?php echo $data->main->temp_min; ?>°C</span>
+			</div>
+			<div class="time">
+				<div>Humidity: <?php echo $data->main->humidity; ?> %</div>
+				<div>Wind: <?php echo $data->wind->speed; ?> km/h</div>
+			</div>
+			<div class="location">
+				<div>Country: <?php echo $data->sys->country; ?></div>
+			</div>
+		</div>
+	</div>
 
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_VERBOSE, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$response = curl_exec($ch);
-
-		curl_close($ch);
-		$data = json_decode($response);
-		$currentTime = time();
-	} else {
-		echo "Nothin";
-	}
-	?>
+	
 </body>
 
 </html>
