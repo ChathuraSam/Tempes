@@ -15,6 +15,8 @@ require_once "get-data.php";
 
 <body>
 
+
+
 	<div class="cont">
 		<div class="main">
 			<img src="assets/fogg-coffee-break.png" width="30%">
@@ -25,60 +27,62 @@ require_once "get-data.php";
 			</form>
 			<?php
 			if (isset($data)) {
-				// print_r($data);
-
-				echo "
+				if ($data->cod == '404') {
+					echo "<span class='city'>City Not Found</span>";
+				} else {
+					// print_r($data);
+					// print("<pre>".print_r($data,true)."</pre>");
+					echo "
 				
-				<div class='card'>
-				<span class='city'>$data->name</span>
-				<ul class='menu'>
-					<li></li>
-					<li></li>
-					<li></li>
-				</ul>
-				<br>
-				<div class='sun'>
-				<img src='http://openweathermap.org/img/w/".$data->weather[0]->icon.".png' class='weather-icon'>
-				</div>
-				<span class='temp'>".floor($data->main->temp_max)."°C</span>
-				<span>
-					<ul class='variations'>
-						<li>".ucwords($data->weather[0]->description)."</li>
-						<li><span class='speed'>".$data->wind->speed."km/h</span></span></li>
-					</ul>
-				</span>
-				<div class='forecast clear'>
-					<div class='day tue'>TUE
-						<br> <span class='cloudy'></span> <br> <span class='highTemp'>79&#176;</span> <br> <span class='lowTemp'>57&#176;</span>
-					</div>
-					<div class='day wed'>WED
-						<br> <span class='sunny'></span> <br> <span class='highTemp'>79&#176;</span> <br> <span class='lowTemp'>57&#176;</span>
-					</div>
-				</div>
-			</div>
-				";
+			<table >
+			<tr>
+				<td colspan=' 4 '><span class='city'>Weather in " . $data->name." ".date('H:i:s', strtotime('+210 minutes', date($data->dt))). "</span></td>
+			</tr>
+			<tr>
+				<td rowspan=' 2 '>
+					<img src='http://openweathermap.org/img/w/" . $data->weather[0]->icon . ".png' class='weather-icon'></br>
+					".$data->weather[0]->description."
+				</td>
+				<td rowspan=' 2 ' colspan=' 2 '><span class='temp'>" . floor($data->main->temp) . "°C</span></td>
+				<td><span class='highTemp'>" . $data->main->temp_max . "°C</span></td>
+			</tr>
+			<tr>
+				<td><span class='highTemp'>" . $data->main->temp_min . "°C</span></td>
+			</tr>
+			<tr>
+				<td>Wind</td>
+				<td>" . $data->wind->speed . " meter/sec</td>
+				<td>Rain</td>
+				<td>-No data-</td>
+			</tr>
+			<tr>
+				<td>Cloudness</td>
+				<td>".$data->clouds->all."</td>
+				<td>Sunrise</td>
+				<td>".date('h:i:s A', strtotime('+210 minutes', $data->sys->sunrise))."</td>
+				
+			</tr>
+			<tr>
+				<td>Pressure</td>
+				<td>".$data->main->pressure ." hPa</td>
+				<td>Sunset</td>
+				<td>".date('h:i:s A', strtotime('+210 minutes', $data->sys->sunset))."</td>
+			</tr>
+			<tr>
+				<td>Humidity</td>
+				<td>".$data->main->humidity." %</td>
+				<td>Country</td>
+				<td>".$data->sys->country."</td>
+				
+			</tr>
+		</table>
+			";
+				}
 			}
 			?>
 		</div>
+
 	</div>
-
-	<div class="back">
-		<div class="div-center">
-
-			<div class="weather-forecast">
-				 <?php echo $data->main->temp_max; ?>°C<span class="min-temperature"><?php echo $data->main->temp_min; ?>°C</span>
-			</div>
-			<div class="time">
-				<div>Humidity: <?php echo $data->main->humidity; ?> %</div>
-				<div>Wind: <?php echo $data->wind->speed; ?> km/h</div>
-			</div>
-			<div class="location">
-				<div>Country: <?php echo $data->sys->country; ?></div>
-			</div>
-		</div>
-	</div>
-
-	
 </body>
 
 </html>

@@ -1,8 +1,16 @@
 -------------------------------------------------------------------------------
 Always Read this instructions bofore write code.(Author: C.M.A Samarajeewa)
 -------------------------------------------------------------------------------
-1.DB
+Embed a map to show the location visualize. I can use lan and lon coodinates for this(JSON included)
 
-create database tempes-db;
-use tempes-db;
 
+$utc_date = DateTime::createFromFormat(
+                'Y-m-d G:i', 
+                '1556670407', 
+                new DateTimeZone('UTC')
+);
+
+$nyc_date = $utc_date;
+$nyc_date->setTimeZone(new DateTimeZone('IST'));
+
+echo $nyc_date->format('Y-m-d g:i A'); // output: 2011-04-26 10:45 PM
